@@ -1,7 +1,7 @@
-export const agree = ['موافق بشدة', 'موافق', 'محايد', 'غير موافق', 'غير موافق بشدة'];
-export const rate = ['ممتازة', 'جيدة', 'متوسطة', 'ضعيفة', 'ضعيفة جدا'];
+const agree = ['موافق بشدة', 'موافق', 'محايد', 'غير موافق', 'غير موافق بشدة'];
+const rate = ['ممتازة', 'جيدة', 'متوسطة', 'ضعيفة', 'ضعيفة جدا'];
 
-export const RELATIONS = [
+const RELATIONS = [
   'مقيم دائم',
   'مقيم مؤقت / مستأجر',
   'مالك محل / نشاط تجاري',
@@ -9,7 +9,7 @@ export const RELATIONS = [
   'زائر لأول مرة',
 ];
 
-export const DURATIONS = [
+const DURATIONS = [
   'أقل من سنة',
   'من 1 إلى 5 سنوات',
   'من 5 إلى 10 سنوات',
@@ -17,10 +17,10 @@ export const DURATIONS = [
   'غير مقيم',
 ];
 
-export const PERSONAL_FIELDS = ['الاسم', 'العمر', 'العلاقة بالمنطقة', 'مدة الإقامة', 'النوع'];
-export const PRIORITY_FIELD = 'أهم أولوية للتطوير';
+const PERSONAL_FIELDS = ['الاسم', 'العمر', 'العلاقة بالمنطقة', 'مدة الإقامة', 'النوع'];
+const PRIORITY_FIELD = 'أهم أولوية للتطوير';
 
-export const sections = [
+const sections = [
   {
     t: 'الجانب الاجتماعي',
     d: 'قيّم الحياة اليومية والتفاعل داخل المنطقة',
@@ -70,3 +70,5 @@ export const sections = [
     ],
   },
 ];
+
+window.SurveyData = { agree, rate, RELATIONS, DURATIONS, PERSONAL_FIELDS, PRIORITY_FIELD, sections };

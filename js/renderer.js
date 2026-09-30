@@ -1,6 +1,7 @@
-import { RELATIONS, DURATIONS, PERSONAL_FIELDS, PRIORITY_FIELD, sections } from './survey-data.js';
-import { esc } from './utils.js';
-import { MAX_PRIORITY_LEN } from './config.js';
+window.SurveyRenderer = (() => {
+  const { RELATIONS, DURATIONS, PERSONAL_FIELDS, PRIORITY_FIELD, sections } = window.SurveyData;
+  const { esc } = window.SurveyUtils;
+  const { MAX_PRIORITY_LEN } = window.SurveyConfig;
 
 const ICONS = [
   { id: 'i-user', tint: '#e8edf7', deep: '#33497a' },
@@ -106,7 +107,7 @@ function priorityHTML() {
   </div>`;
 }
 
-export function renderForm(body, fieldOrder) {
+function renderForm(body, fieldOrder) {
   fieldOrder.length = 0;
   PERSONAL_FIELDS.forEach((k) => fieldOrder.push(k));
   const html = personalHTML() + sectionsHTML(fieldOrder) + priorityHTML();
@@ -114,7 +115,7 @@ export function renderForm(body, fieldOrder) {
   body.innerHTML = html;
 }
 
-export function toggleOther(input) {
+function toggleOther(input) {
   const label = input.closest('label.opt');
   if (!label || label.dataset.other !== '1') return;
   const card = input.closest('.card');
@@ -125,7 +126,7 @@ export function toggleOther(input) {
   if (!anyOther) wrap.querySelector('input').value = '';
 }
 
-export function applyDraft(form, draft) {
+function applyDraft(form, draft) {
   if (!draft) return;
   Object.entries(draft).forEach(([name, val]) => {
     const els = [...form.elements].filter((e) => e.name === name);
@@ -141,3 +142,6 @@ export function applyDraft(form, draft) {
   const ta = form.querySelector('#in-final');
   if (ta) document.getElementById('ccount').textContent = ta.value.length;
 }
+
+  return { renderForm, toggleOther, applyDraft };
+})();

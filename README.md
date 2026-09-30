@@ -1,52 +1,64 @@
-# استبيان تقييم منطقة جديلة
+# Jadila District Evaluation Survey
 
-مشروع ويب (HTML + CSS + JS بدون أي مكتبات) لجمع آراء السكان حول تطوير منطقة جديلة.
+A dependency-free web project (HTML + CSS + JS, no libraries) for collecting residents' opinions on developing the Jadila district. The UI is Arabic (RTL).
 
-## هيكل المشروع
+## Project structure
 
 ```
 M/
-├── index.html            # الهيكل الدلالي + مكتبة أيقونات SVG
+├── index.html            # Semantic markup + SVG icon library
 ├── css/
-│   ├── tokens.css        # متغيرات التصميم
-│   ├── base.css          # reset + خطوط
-│   ├── layout.css        # الشريط العلوي + الهيرو + orbs + الظهور عند التمرير
-│   ├── components.css    # الكروت + الخيارات + الأزرار + الأنيميشن
-│   └── responsive.css    # موبايل أولًا: 380px / 600px / 960px
+│   ├── tokens.css        # Design tokens (colors, shadows, sizes)
+│   ├── base.css          # Reset + fonts
+│   ├── layout.css        # Top progress bar + hero + orbs + scroll reveal
+│   ├── components.css    # Cards + options + buttons + animations
+│   └── responsive.css    # Mobile-first: 380px / 600px / 960px
 ├── js/
-│   ├── config.js         # رابط الـ API + الثوابت
-│   ├── survey-data.js    # كل الأسئلة والأقسام
+│   ├── config.js         # API URL + constants (edit here)
+│   ├── survey-data.js    # All questions and sections (single source)
 │   ├── utils.js          # esc + helpers
-│   ├── storage.js        # حفظ المسودة في localStorage
+│   ├── storage.js        # Draft persistence in localStorage
 │   ├── api.js            # collect() + submitSurvey()
-│   ├── validation.js     # قواعد التحقق
-│   ├── renderer.js       # بناء الفورم + الأيقونات
-│   ├── progress.js       # شريط التقدم والعداد
-│   └── main.js           # نقطة الدخول وربط الأحداث
+│   ├── validation.js     # Validation rules
+│   ├── renderer.js       # Form rendering + icons
+│   ├── progress.js       # Progress bar + counter
+│   └── main.js           # Entry point + event wiring
 └── assets/
     └── favicon.svg
 ```
 
-## الأيقونات والأنيميشن
+Scripts are classic (no `type="module"`, shared via `window.Survey*` namespaces), so the page works both from `file://` and over `http`.
 
-- 7 أيقونات SVG خطية (stroke) معرّفة كـ `<symbol>` في `index.html`، تُستخدم عبر `<use>` — خفيفة وتتلوّن بـ `currentColor` مع خلفية ملوّنة لكل قسم من `renderer.js`.
-- الهيرو فيه 3 كرات ضبابية متحركة (`drift`) + دخول متدرج للمحتوى (`rise`).
-- الأقسام والكروت تظهر تدريجيًا عند التمرير عبر `IntersectionObserver` في `main.js` (كلاس `rv`).
-- لمعة متحركة على شريط التقدم (`shimmer`) وزر الإرسال، ونبضة (`pop`) عند اختيار إجابة، ورسمة متحركة لعلامة النجاح (`draw`).
-- كل الأنيميشن يتوقف مع `prefers-reduced-motion`.
+## Icons & animation
 
-## التشغيل
+- 7 stroke-style SVG icons defined as `<symbol>` in `index.html` and used via `<use>` — lightweight, tinted with `currentColor`, each section getting its own background tint from the `ICONS` table in `renderer.js`.
+- The hero has 3 animated blurred orbs (`drift`) plus staggered content entrance (`rise`).
+- Sections and cards reveal gradually on scroll via `IntersectionObserver` in `main.js` (the `rv` class).
+- Animated shine on the progress bar (`shimmer`) and the submit button, a pop (`pop`) when an answer is selected, and a drawn checkmark on the success screen (`draw`).
+- All animations are disabled under `prefers-reduced-motion`.
+
+## Running
+
+Double-click `index.html` to open it directly, or serve it locally:
 
 ```bash
 python3 -m http.server 8000
 ```
 
-ثم افتح `http://localhost:8000` (وحدات `type="module"` تحتاج `http`).
+Then open `http://localhost:8000`.
 
-## التعديل
+## Customizing
 
-- **رابط الإرسال:** `js/config.js`
-- **الأسئلة:** `js/survey-data.js`
-- **الألوان:** `css/tokens.css`
-- **قواعد التحقق:** `js/validation.js`
-- **أيقونات الأقسام:** `index.html` (الـ symbols) + جدول `ICONS` في `js/renderer.js`
+- **Submit endpoint:** `js/config.js` (`SCRIPT_URL`)
+- **Questions:** `js/survey-data.js` (`sections` array)
+- **Colors:** `css/tokens.css`
+- **Validation rules:** `js/validation.js`
+- **Section icons:** `index.html` (the symbols) + the `ICONS` table in `js/renderer.js`
+
+## Features
+
+- Responsive / adaptive (mobile / tablet / desktop)
+- Full validation with per-question error messages + scroll to first error
+- Correct, accessible choice controls (`label` + `input` + `:has(:checked)`)
+- Conditional "Other" text field merged into the submission
+- Auto-saved draft + progress bar + success screen
