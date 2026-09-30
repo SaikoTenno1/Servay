@@ -1,0 +1,24 @@
+@media (min-width: 600px) {
+  .opts { grid-template-columns: 1fr 1fr; }
+  .opts.cols-1 { grid-template-columns: 1fr; }
+  .grid2 { grid-template-columns: 1fr 1fr; }
+  .card { padding: 1.15rem 1.25rem; }
+  main { padding: 0 1.25rem 3rem; }
+}
+@media (min-width: 960px) {
+  header.hero { padding: 3rem 1rem 4rem; }
+}
+@media (max-width: 380px) {
+  .opt { font-size: 0.9rem; padding: 0.6rem 0.7rem; }
+  .progress-txt { min-width: 0; }
+  button.btn { min-width: 100%; }
+  .actions { flex-direction: column; }
+  .sec-icon { width: 40px; height: 40px; }
+  .orb-a { width: 220px; height: 220px; }
+  .orb-b { width: 170px; height: 170px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  html { scroll-behavior: auto; }
+  .rv { opacity: 1; transform: none; }
+}

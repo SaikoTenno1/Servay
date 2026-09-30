@@ -1,0 +1,13 @@
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Cairo', Tahoma, Arial, sans-serif;
+  line-height: 1.75;
+  -webkit-tap-highlight-color: transparent;
+}
+img { max-width: 100%; }
+button, input, select, textarea { font: inherit; }
+:focus-visible { outline: none; }

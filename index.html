@@ -1,134 +1,108 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>استبيان تقييم منطقة جديلة</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#eef2f9;--card:#fff;--ink:#1f2a44;--mute:#5d6b8a;--main:#6f8fc2;--dark:#3f5a8c;--line:#c9d4e8}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:'Cairo',Tahoma,Arial,sans-serif;line-height:1.7}
-header{background:var(--main);color:#fff;text-align:center;padding:2rem 1rem;border-radius:0 0 28px 28px}
-header h1{margin:0;font-size:clamp(1.6rem,5vw,2.4rem);font-weight:800}
-header p{margin:.3rem 0 0;opacity:.9}
-main{max-width:760px;margin:0 auto;padding:1rem}
-h2{color:var(--dark);font-size:1.3rem;margin:2rem 0 .8rem;padding-right:.7rem;border-right:5px solid var(--main)}
-.card{background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:1rem 1.2rem;margin-bottom:1rem}
-.card>.q{font-weight:600;margin-bottom:.5rem}
-label.opt{display:flex;align-items:center;gap:.6rem;padding:.35rem .3rem;cursor:pointer;border-radius:10px}
-label.opt:hover{background:var(--bg)}
-input[type=radio],input[type=checkbox]{width:20px;height:20px;accent-color:var(--dark);flex:none}
-input[type=radio]{border-radius:50%}
-.txt{width:100%;font:inherit;padding:.6rem .8rem;border:1.5px solid var(--line);border-radius:14px;background:#fff}
-.txt:focus,textarea:focus{outline:2px solid var(--main);border-color:var(--main)}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
-@media(max-width:560px){.grid{grid-template-columns:1fr}}
-.row{display:flex;gap:1.5rem}
-.note{font-size:.9rem;color:var(--mute)}
-.final{background:var(--main);border:0}
-.final .q{color:#fff}
-textarea{width:100%;min-height:130px;font:inherit;padding:.8rem;border:0;border-radius:14px;resize:vertical}
-button{display:block;width:100%;margin:1.5rem 0 3rem;padding:.9rem;font:inherit;font-weight:800;font-size:1.1rem;color:#fff;background:var(--dark);border:0;border-radius:16px;cursor:pointer}
-button:disabled{opacity:.6;cursor:wait}
-#done{display:none;text-align:center;padding:4rem 1rem}
-#done h2{border:0;font-size:1.8rem}
-#err{color:#b3261e;text-align:center;min-height:1.5rem}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="استبيان تقييم وتطوير منطقة جديلة — شارك برأيك في الجوانب الاجتماعية والبيئية والاقتصادية والعمرانية والثقافية">
+  <meta property="og:title" content="استبيان تقييم منطقة جديلة">
+  <meta property="og:description" content="رأيك يصنع الفرق في تطوير المنطقة — الاستبيان يستغرق 3 دقائق فقط">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#33497a">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
-<header><h1>استبيان تقييم منطقة جديلة</h1><p>رأيك يفرق في تطوير المنطقة</p></header>
-<main>
-<form id="f" novalidate>
-<div id="form-body"></div>
-<div id="err"></div>
-<button type="submit" id="btn">إرسال الإجابات</button>
-</form>
-<div id="done"><h2>شكراً لمشاركتك 🌿</h2><p>تم استلام إجاباتك.</p></div>
-</main>
 
-<script>
-// ضع هنا رابط Google Apps Script بعد ما تنشره
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyVtGLqI63Tt-2EpePX660TUR6LZXZNUkdmYUf2CoEzp8umwVzCl6o1Ku756Xro57fXrQ/exec";
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-user" viewBox="0 0 24 24">
+        <circle cx="12" cy="8" r="3.6"/>
+        <path d="M4.8 20c1-3.6 3.9-5.6 7.2-5.6s6.2 2 7.2 5.6"/>
+      </symbol>
+      <symbol id="i-users" viewBox="0 0 24 24">
+        <circle cx="9" cy="8.5" r="3"/>
+        <path d="M3.5 19c.6-3 2.7-4.6 5.5-4.6s4.9 1.6 5.5 4.6"/>
+        <circle cx="16.8" cy="9.5" r="2.4"/>
+        <path d="M15.8 14.5c2.7.2 4.2 1.6 4.7 3.9"/>
+      </symbol>
+      <symbol id="i-leaf" viewBox="0 0 24 24">
+        <path d="M5 19C5 10.5 10 5.5 20 4c-1 10-6 15-15 15"/>
+        <path d="M5 19c3-5.2 7-9.2 11.5-11.5"/>
+      </symbol>
+      <symbol id="i-bag" viewBox="0 0 24 24">
+        <path d="M6 8h12l-1.1 12H7.1L6 8z"/>
+        <path d="M9 8V6.5a3 3 0 0 1 6 0V8"/>
+      </symbol>
+      <symbol id="i-build" viewBox="0 0 24 24">
+        <rect x="4" y="9" width="7" height="11" rx="1"/>
+        <rect x="13" y="4" width="7" height="16" rx="1"/>
+        <path d="M6.8 12h1.4M6.8 15h1.4M15.8 8h1.4M15.8 11h1.4M15.8 14h1.4"/>
+      </symbol>
+      <symbol id="i-bank" viewBox="0 0 24 24">
+        <path d="M3 20h18"/>
+        <path d="M5.5 20v-8.5M10 20v-8.5M14 20v-8.5M18.5 20v-8.5"/>
+        <path d="M3 11.5L12 5l9 6.5"/>
+      </symbol>
+      <symbol id="i-target" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="8"/>
+        <circle cx="12" cy="12" r="4.4"/>
+        <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/>
+      </symbol>
+    </defs>
+  </svg>
 
-const agree = ["موافق بشدة","موافق","محايد","غير موافق","غير موافق بشدة"];
-const rate  = ["ممتازة","جيدة","متوسطة","ضعيفة","ضعيفة جدا"];
+  <div class="progress-wrap" role="status" aria-live="polite">
+    <div class="progress-inner">
+      <div class="progress-track"><div class="progress-fill" id="pfill"></div></div>
+      <div class="progress-txt" id="ptxt">0% مكتمل</div>
+    </div>
+  </div>
 
-const sections = [
- {t:"الجانب الاجتماعي", q:[
-  {k:"الأمان داخل المنطقة", q:"إلى أي مدى تشعر بالأمان داخل المنطقة؟", o:["آمن جداً","آمن","متوسط","غير آمن","غير آمن جداً"]},
-  {k:"أماكن الجلوس والتجمع", q:"هل توجد أماكن مناسبة للجلوس والتجمع للسكان؟", o:["متوفرة جداً","متوفرة","متوفرة بشكل متوسط","قليلة","غير متوفرة"]},
-  {k:"ملاءمة المنطقة للفئات العمرية", q:"هل المنطقة مناسبة لمختلف الفئات العمرية؟", o:["مناسبة جداً","مناسبة","مناسبة إلى حد ما","غير مناسبة","غير مناسبة تماماً"]}]},
- {t:"الجانب البيئي", q:[
-  {k:"النظافة العامة", q:"كيف تقيّم مستوى النظافة العامة في المنطقة؟", o:["ممتاز","جيد","متوسط","ضعيف","ضعيف جدا"]},
-  {k:"كفاية الأشجار والمساحات الخضراء", q:"هل ترى أن الأشجار والمساحات الخضراء في المنطقة كافية؟", o:agree},
-  {k:"أكثر مشكلة بيئية", q:"ما أكثر مشكلة بيئية تلاحظها في المنطقة؟", o:["الضوضاء","تلوث الهواء","قلة الأشجار والمساحات الخضراء","مياه راكدة أو مشكلات صرف","أخرى"]}]},
- {t:"الجانب الاقتصادي", q:[
-  {k:"تنشيط الحركة التجارية", q:"إلى أي مدى تساهم المنطقة في تنشيط الحركة التجارية والاقتصادية؟", o:["بدرجة كبيرة جدا","بدرجة كبيرة","بدرجة متوسطة","بدرجة قليلة","لا تساهم"]},
-  {k:"كفاية المحلات والخدمات", q:"هل المحلات والخدمات التجارية المتوفرة تلبي احتياجات السكان؟", o:["تلبي الاحتياجات جداً","تلبي الاحتياجات","تلبيها بشكل متوسط","لا تلبي الاحتياجات بشكل كاف","غير متوفرة"]},
-  {k:"الخدمات التجارية المطلوبة", q:"ما نوع الخدمات التجارية التي تحتاجها المنطقة بشكل أكبر؟", o:["محلات غذائية","صيدليات","مطاعم ومقاهي","خدمات ترفيهية","خدمات أخرى"]},
-  {k:"التطوير وزيادة النشاط التجاري", q:"هل ترى أن تطوير المنطقة يمكن أن يساهم في زيادة النشاط التجاري؟", o:agree}]},
- {t:"الجانب العمراني", q:[
-  {k:"حالة الطرق", q:"كيف تقيّم حالة الطرق داخل المنطقة؟", o:rate},
-  {k:"حالة الأرصفة ومسارات المشاة", q:"كيف تقيّم حالة الأرصفة ومسارات المشاة؟", o:["ممتازة","جيدة","متوسطة","ضعيفة","لا توجد أرصفة في بعض المناطق"]},
-  {k:"تنظيم حركة السيارات والمشاة", q:"هل تنظيم حركة السيارات والمشاة داخل المنطقة جيد؟", o:rate},
-  {k:"أكثر مشكلة عمرانية", q:"ما أكثر مشكلة عمرانية تلاحظها في المنطقة؟", o:["الزحام المروري","سوء حالة بعض المباني","سوء حالة الطرق","سوء حالة الأرصفة","الانتظار العشوائي للسيارات","عدم وجود أماكن مناسبة للمشاة","أخرى"]}]},
- {t:"الجانب الثقافي", q:[
-  {k:"انعكاس الهوية والطابع المحلي", q:"هل تعكس منطقة جديلة هويتها وطابعها المحلي؟", o:["تعكس بشكل كبير جداً","تعكس بشكل كبير","إلى حد ما","لا تعكس بشكل كبير","لا تعكس إطلاقاً"]},
-  {k:"أماكن تعبر عن التاريخ والثقافة", q:"هل توجد أماكن أو عناصر تعبر عن تاريخ وثقافة المجتمع المحلي؟", o:["كثيرة","موجودة","محدودة","قليلة جداً","غير موجودة"]},
-  {k:"الحفاظ على الهوية عند التطوير", q:"هل توافق على ضرورة الحفاظ على الهوية والطابع المحلي للمنطقة عند تطويرها؟", o:agree},
-  {k:"عناصر هوية المنطقة", q:"ما العناصر التي ترى أنها تمثل هوية المنطقة؟", multi:true, o:["المباني","الأماكن العامة","الشوارع","التجمعات","المحلات والأسواق","المساجد","لا توجد عناصر","أخرى"]}]}
-];
+  <header class="hero">
+    <div class="orb orb-a"></div>
+    <div class="orb orb-b"></div>
+    <div class="orb orb-c"></div>
+    <div class="hero-inner">
+      <span class="badge">📋 استبيان ميداني</span>
+      <h1>استبيان تقييم منطقة جديلة</h1>
+      <p class="sub">رأيك يصنع الفرق في تطوير المنطقة — الاستبيان يستغرق 3 دقائق فقط</p>
+      <div class="hero-meta"><span>⏱ 3 دقائق</span><span>🔒 إجابات سرية</span><span>📊 6 أقسام</span></div>
+    </div>
+  </header>
 
-const esc = s => String(s).replace(/"/g,"&quot;");
-let n = 0, html = "";
+  <main>
+    <div class="form-shell">
+      <form id="f" novalidate>
+        <div id="form-body"></div>
+        <div id="form-err" role="alert"></div>
+        <div class="actions">
+          <button type="submit" class="btn btn-primary" id="btn">إرسال الإجابات ✓</button>
+          <button type="button" class="btn btn-ghost" id="clearBtn">مسح الإجابات</button>
+        </div>
+        <div class="answered" id="answered">أجبت على 0 من 24 سؤالًا</div>
+      </form>
+      <div id="done" role="status">
+        <svg class="ok-badge" viewBox="0 0 110 110" aria-hidden="true">
+          <circle cx="55" cy="55" r="48" fill="#e8f6ee"/>
+          <circle class="ring" cx="55" cy="55" r="48" fill="none" stroke="#15803d" stroke-width="6" stroke-linecap="round"/>
+          <path class="tick" d="M37 56l13 13 24-28" fill="none" stroke="#15803d" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h2>شكرًا لمشاركتك!</h2>
+        <p>تم استلام إجاباتك بنجاح وسنأخذها في الاعتبار عند تطوير المنطقة.</p>
+        <button class="btn btn-ghost" id="newBtn" style="max-width:260px;margin:0 auto">تعبئة استبيان جديد</button>
+      </div>
+    </div>
+  </main>
 
-// البيانات الشخصية
-html += `<h2>البيانات الأساسية</h2><div class="grid">
-<div class="card"><div class="q">الاسم</div><input class="txt" name="الاسم"></div>
-<div class="card"><div class="q">العمر</div><input class="txt" name="العمر" inputmode="numeric"></div>
-<div class="card"><div class="q">ما علاقتك بالمنطقة؟</div><input class="txt" name="العلاقة بالمنطقة"></div>
-<div class="card"><div class="q">منذ متى تقيم في المنطقة؟</div><input class="txt" name="مدة الإقامة"></div></div>
-<div class="card"><div class="q">النوع</div><div class="row">
-<label class="opt"><input type="radio" name="النوع" value="ذكر">ذكر</label>
-<label class="opt"><input type="radio" name="النوع" value="أنثى">أنثى</label></div></div>`;
+  <footer class="site">استبيان تطوير منطقة جديلة — جميع البيانات تُستخدم لأغراض التطوير فقط</footer>
 
-sections.forEach(s=>{
-  html += `<h2>${s.t}</h2>`;
-  s.q.forEach(q=>{
-    n++;
-    const type = q.multi ? "checkbox" : "radio";
-    html += `<div class="card"><div class="q">${n}. ${q.q}</div>` +
-      (q.multi?`<div class="note">يمكنك اختيار أكثر من إجابة</div>`:"") +
-      q.o.map(o=>`<label class="opt"><input type="${type}" name="${esc(q.k)}" value="${esc(o)}">${o}</label>`).join("") + `</div>`;
-  });
-});
-
-html += `<div class="card final"><div class="q">من وجهة نظرك، ما أهم أولوية يجب التركيز عليها لتطوير وتحسين منطقة جديلة؟</div>
-<textarea name="أهم أولوية للتطوير"></textarea></div>`;
-
-document.getElementById("form-body").innerHTML = html;
-
-document.getElementById("f").addEventListener("submit", async e=>{
-  e.preventDefault();
-  const form = e.target, err = document.getElementById("err"), btn = document.getElementById("btn");
-  const data = {};
-  new Set([...form.elements].map(el=>el.name).filter(Boolean)).forEach(name=>{
-    const els = [...form.elements].filter(el=>el.name===name);
-    if(els[0].type==="radio") data[name] = (els.find(x=>x.checked)||{}).value || "";
-    else if(els[0].type==="checkbox") data[name] = els.filter(x=>x.checked).map(x=>x.value).join("، ");
-    else data[name] = els[0].value.trim();
-  });
-  if(!Object.values(data).some(v=>v)){ err.textContent="من فضلك جاوب على سؤال واحد على الأقل."; return; }
-  err.textContent = ""; btn.disabled = true; btn.textContent = "جاري الإرسال...";
-  try{
-    await fetch(SCRIPT_URL, {method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify(data)});
-    form.style.display = "none"; document.getElementById("done").style.display = "block"; scrollTo(0,0);
-  }catch(x){
-    err.textContent = "تعذر الإرسال، تأكد من الاتصال بالإنترنت وحاول مرة أخرى.";
-    btn.disabled = false; btn.textContent = "إرسال الإجابات";
-  }
-});
-</script>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>
