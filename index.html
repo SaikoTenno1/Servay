@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>استبيان تقييم منطقة جديلة</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef2f9;--card:#fff;--ink:#1f2a44;--mute:#5d6b8a;--main:#6f8fc2;--dark:#3f5a8c;--line:#c9d4e8}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Cairo',Tahoma,Arial,sans-serif;line-height:1.7}
+header{background:var(--main);color:#fff;text-align:center;padding:2rem 1rem;border-radius:0 0 28px 28px}
+header h1{margin:0;font-size:clamp(1.6rem,5vw,2.4rem);font-weight:800}
+header p{margin:.3rem 0 0;opacity:.9}
+main{max-width:760px;margin:0 auto;padding:1rem}
+h2{color:var(--dark);font-size:1.3rem;margin:2rem 0 .8rem;padding-right:.7rem;border-right:5px solid var(--main)}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:1rem 1.2rem;margin-bottom:1rem}
+.card>.q{font-weight:600;margin-bottom:.5rem}
+label.opt{display:flex;align-items:center;gap:.6rem;padding:.35rem .3rem;cursor:pointer;border-radius:10px}
+label.opt:hover{background:var(--bg)}
+input[type=radio],input[type=checkbox]{width:20px;height:20px;accent-color:var(--dark);flex:none}
+input[type=radio]{border-radius:50%}
+.txt{width:100%;font:inherit;padding:.6rem .8rem;border:1.5px solid var(--line);border-radius:14px;background:#fff}
+.txt:focus,textarea:focus{outline:2px solid var(--main);border-color:var(--main)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+@media(max-width:560px){.grid{grid-template-columns:1fr}}
+.row{display:flex;gap:1.5rem}
+.note{font-size:.9rem;color:var(--mute)}
+.final{background:var(--main);border:0}
+.final .q{color:#fff}
+textarea{width:100%;min-height:130px;font:inherit;padding:.8rem;border:0;border-radius:14px;resize:vertical}
+button{display:block;width:100%;margin:1.5rem 0 3rem;padding:.9rem;font:inherit;font-weight:800;font-size:1.1rem;color:#fff;background:var(--dark);border:0;border-radius:16px;cursor:pointer}
+button:disabled{opacity:.6;cursor:wait}
+#done{display:none;text-align:center;padding:4rem 1rem}
+#done h2{border:0;font-size:1.8rem}
+#err{color:#b3261e;text-align:center;min-height:1.5rem}
+</style>
+</head>
+<body>
+<header><h1>استبيان تقييم منطقة جديلة</h1><p>رأيك يفرق في تطوير المنطقة</p></header>
+<main>
+<form id="f" novalidate>
+<div id="form-body"></div>
+<div id="err"></div>
+<button type="submit" id="btn">إرسال الإجابات</button>
+</form>
+<div id="done"><h2>شكراً لمشاركتك 🌿</h2><p>تم استلام إجاباتك.</p></div>
+</main>
+
+<script>
+// ضع هنا رابط Google Apps Script بعد ما تنشره
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyVtGLqI63Tt-2EpePX660TUR6LZXZNUkdmYUf2CoEzp8umwVzCl6o1Ku756Xro57fXrQ/exec";
+
+const agree = ["موافق بشدة","موافق","محايد","غير موافق","غير موافق بشدة"];
+const rate  = ["ممتازة","جيدة","متوسطة","ضعيفة","ضعيفة جدا"];
+
+const sections = [
+ {t:"الجانب الاجتماعي", q:[
+  {k:"الأمان داخل المنطقة", q:"إلى أي مدى تشعر بالأمان داخل المنطقة؟", o:["آمن جداً","آمن","متوسط","غير آمن","غير آمن جداً"]},
+  {k:"أماكن الجلوس والتجمع", q:"هل توجد أماكن مناسبة للجلوس والتجمع للسكان؟", o:["متوفرة جداً","متوفرة","متوفرة بشكل متوسط","قليلة","غير متوفرة"]},
+  {k:"ملاءمة المنطقة للفئات العمرية", q:"هل المنطقة مناسبة لمختلف الفئات العمرية؟", o:["مناسبة جداً","مناسبة","مناسبة إلى حد ما","غير مناسبة","غير مناسبة تماماً"]}]},
+ {t:"الجانب البيئي", q:[
+  {k:"النظافة العامة", q:"كيف تقيّم مستوى النظافة العامة في المنطقة؟", o:["ممتاز","جيد","متوسط","ضعيف","ضعيف جدا"]},
+  {k:"كفاية الأشجار والمساحات الخضراء", q:"هل ترى أن الأشجار والمساحات الخضراء في المنطقة كافية؟", o:agree},
+  {k:"أكثر مشكلة بيئية", q:"ما أكثر مشكلة بيئية تلاحظها في المنطقة؟", o:["الضوضاء","تلوث الهواء","قلة الأشجار والمساحات الخضراء","مياه راكدة أو مشكلات صرف","أخرى"]}]},
+ {t:"الجانب الاقتصادي", q:[
+  {k:"تنشيط الحركة التجارية", q:"إلى أي مدى تساهم المنطقة في تنشيط الحركة التجارية والاقتصادية؟", o:["بدرجة كبيرة جدا","بدرجة كبيرة","بدرجة متوسطة","بدرجة قليلة","لا تساهم"]},
+  {k:"كفاية المحلات والخدمات", q:"هل المحلات والخدمات التجارية المتوفرة تلبي احتياجات السكان؟", o:["تلبي الاحتياجات جداً","تلبي الاحتياجات","تلبيها بشكل متوسط","لا تلبي الاحتياجات بشكل كاف","غير متوفرة"]},
+  {k:"الخدمات التجارية المطلوبة", q:"ما نوع الخدمات التجارية التي تحتاجها المنطقة بشكل أكبر؟", o:["محلات غذائية","صيدليات","مطاعم ومقاهي","خدمات ترفيهية","خدمات أخرى"]},
+  {k:"التطوير وزيادة النشاط التجاري", q:"هل ترى أن تطوير المنطقة يمكن أن يساهم في زيادة النشاط التجاري؟", o:agree}]},
+ {t:"الجانب العمراني", q:[
+  {k:"حالة الطرق", q:"كيف تقيّم حالة الطرق داخل المنطقة؟", o:rate},
+  {k:"حالة الأرصفة ومسارات المشاة", q:"كيف تقيّم حالة الأرصفة ومسارات المشاة؟", o:["ممتازة","جيدة","متوسطة","ضعيفة","لا توجد أرصفة في بعض المناطق"]},
+  {k:"تنظيم حركة السيارات والمشاة", q:"هل تنظيم حركة السيارات والمشاة داخل المنطقة جيد؟", o:rate},
+  {k:"أكثر مشكلة عمرانية", q:"ما أكثر مشكلة عمرانية تلاحظها في المنطقة؟", o:["الزحام المروري","سوء حالة بعض المباني","سوء حالة الطرق","سوء حالة الأرصفة","الانتظار العشوائي للسيارات","عدم وجود أماكن مناسبة للمشاة","أخرى"]}]},
+ {t:"الجانب الثقافي", q:[
+  {k:"انعكاس الهوية والطابع المحلي", q:"هل تعكس منطقة جديلة هويتها وطابعها المحلي؟", o:["تعكس بشكل كبير جداً","تعكس بشكل كبير","إلى حد ما","لا تعكس بشكل كبير","لا تعكس إطلاقاً"]},
+  {k:"أماكن تعبر عن التاريخ والثقافة", q:"هل توجد أماكن أو عناصر تعبر عن تاريخ وثقافة المجتمع المحلي؟", o:["كثيرة","موجودة","محدودة","قليلة جداً","غير موجودة"]},
+  {k:"الحفاظ على الهوية عند التطوير", q:"هل توافق على ضرورة الحفاظ على الهوية والطابع المحلي للمنطقة عند تطويرها؟", o:agree},
+  {k:"عناصر هوية المنطقة", q:"ما العناصر التي ترى أنها تمثل هوية المنطقة؟", multi:true, o:["المباني","الأماكن العامة","الشوارع","التجمعات","المحلات والأسواق","المساجد","لا توجد عناصر","أخرى"]}]}
+];
+
+const esc = s => String(s).replace(/"/g,"&quot;");
+let n = 0, html = "";
+
+// البيانات الشخصية
+html += `<h2>البيانات الأساسية</h2><div class="grid">
+<div class="card"><div class="q">الاسم</div><input class="txt" name="الاسم"></div>
+<div class="card"><div class="q">العمر</div><input class="txt" name="العمر" inputmode="numeric"></div>
+<div class="card"><div class="q">ما علاقتك بالمنطقة؟</div><input class="txt" name="العلاقة بالمنطقة"></div>
+<div class="card"><div class="q">منذ متى تقيم في المنطقة؟</div><input class="txt" name="مدة الإقامة"></div></div>
+<div class="card"><div class="q">النوع</div><div class="row">
+<label class="opt"><input type="radio" name="النوع" value="ذكر">ذكر</label>
+<label class="opt"><input type="radio" name="النوع" value="أنثى">أنثى</label></div></div>`;
+
+sections.forEach(s=>{
+  html += `<h2>${s.t}</h2>`;
+  s.q.forEach(q=>{
+    n++;
+    const type = q.multi ? "checkbox" : "radio";
+    html += `<div class="card"><div class="q">${n}. ${q.q}</div>` +
+      (q.multi?`<div class="note">يمكنك اختيار أكثر من إجابة</div>`:"") +
+      q.o.map(o=>`<label class="opt"><input type="${type}" name="${esc(q.k)}" value="${esc(o)}">${o}</label>`).join("") + `</div>`;
+  });
+});
+
+html += `<div class="card final"><div class="q">من وجهة نظرك، ما أهم أولوية يجب التركيز عليها لتطوير وتحسين منطقة جديلة؟</div>
+<textarea name="أهم أولوية للتطوير"></textarea></div>`;
+
+document.getElementById("form-body").innerHTML = html;
+
+document.getElementById("f").addEventListener("submit", async e=>{
+  e.preventDefault();
+  const form = e.target, err = document.getElementById("err"), btn = document.getElementById("btn");
+  const data = {};
+  new Set([...form.elements].map(el=>el.name).filter(Boolean)).forEach(name=>{
+    const els = [...form.elements].filter(el=>el.name===name);
+    if(els[0].type==="radio") data[name] = (els.find(x=>x.checked)||{}).value || "";
+    else if(els[0].type==="checkbox") data[name] = els.filter(x=>x.checked).map(x=>x.value).join("، ");
+    else data[name] = els[0].value.trim();
+  });
+  if(!Object.values(data).some(v=>v)){ err.textContent="من فضلك جاوب على سؤال واحد على الأقل."; return; }
+  err.textContent = ""; btn.disabled = true; btn.textContent = "جاري الإرسال...";
+  try{
+    await fetch(SCRIPT_URL, {method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify(data)});
+    form.style.display = "none"; document.getElementById("done").style.display = "block"; scrollTo(0,0);
+  }catch(x){
+    err.textContent = "تعذر الإرسال، تأكد من الاتصال بالإنترنت وحاول مرة أخرى.";
+    btn.disabled = false; btn.textContent = "إرسال الإجابات";
+  }
+});
+</script>
+</body>
+</html>
